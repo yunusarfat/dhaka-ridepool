@@ -26,6 +26,46 @@ model User {
   password_hash String
   role          Role
   created_at    DateTime @default(now())
+  vehicle       Vehicle?
+  rideRequests  RideRequest[]
+}
+
+
+
+enum VehicleStatus {
+  ONLINE
+  OFFLINE
+}
+
+model Vehicle {
+  id          Int           @id @default(autoincrement())
+  driver_id   Int           @unique
+  driver      User          @relation(fields: [driver_id], references: [id])
+  name        String
+  capacity    Int
+  status      VehicleStatus @default(OFFLINE)
+  created_at  DateTime      @default(now())
+}
+
+enum RideStatus {
+  REQUESTED
+  MATCHED
+  DRIVER_ARRIVED
+  STARTED
+  COMPLETED
+  CANCELLED
+}
+
+model RideRequest {
+  id              Int        @id @default(autoincrement())
+  passenger_id    Int
+  passenger       User       @relation(fields: [passenger_id], references: [id])
+  pickup          String
+  destination     String
+  seats_requested Int
+  status          RideStatus @default(REQUESTED)
+  estimated_fare  Int
+  created_at      DateTime   @default(now())
 }
 
 
