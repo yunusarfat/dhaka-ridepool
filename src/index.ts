@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import vehicleRoutes from "./routes/vehicleRoutes.js";
 import rideRoutes from "./routes/rideRoutes.js";
+import poolRoutes from "./routes/poolRoutes.js";
 
 dotenv.config();
 
@@ -19,6 +20,8 @@ app.get("/health", (_req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/rides", rideRoutes);
+app.use("/api/pools", poolRoutes);
+
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
 
