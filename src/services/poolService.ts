@@ -64,7 +64,7 @@ export async function assignRideToPool(rideRequestId: number) {
       select: { vehicle_id: true },
     });
     const busyVehicleIds = activePools.map((p) => p.vehicle_id);
-
+    
     const availableVehicle = await tx.vehicle.findFirst({
       where: {
         status: "ONLINE",

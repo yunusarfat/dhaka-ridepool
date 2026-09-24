@@ -31,6 +31,8 @@ services:
       - ./src:/app/src
       - ./prisma:/app/prisma
       - ./prisma.config.ts:/app/prisma.config.ts
+      - ./tests:/app/tests
+      - ./jest.config.js:/app/jest.config.js
 
 volumes:
   pgdata:
