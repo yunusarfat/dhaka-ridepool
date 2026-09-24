@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { markDriverArrived, startTrip, completeTrip, getPoolDetails } from "../services/poolLifecycleService.js";
+import { markDriverArrived, startTrip, completeTrip, getPoolDetails } from "../services/poolLifeCycleService.js";
 import { getActivePoolForDriver } from "../services/poolLifeCycleService.js";
 
 function handlePoolError(err: unknown, res: Response) {
