@@ -1,4 +1,4 @@
-import prisma from "../db/prismaClient.js";
+import prisma from "../db/prismaclient.js";
 
 export async function createVehicle(driverId: number, name: string, capacity: number) {
   const existing = await prisma.vehicle.findUnique({ where: { driver_id: driverId } });

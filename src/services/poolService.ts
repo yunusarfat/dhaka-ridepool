@@ -1,4 +1,4 @@
-import prisma from "../db/prismaClient.js";
+import prisma from "../db/prismaclient.js";
 import { isRouteCompatible } from "../config/zones.js";
 import { calculateEstimatedFare } from "./fareService.js";
 
