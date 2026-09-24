@@ -71,3 +71,23 @@ export async function getPoolDetails(driverId: number, poolId: number) {
 
   return pool;
 }
+export async function getActivePoolForDriver(driverId: number) {
+  const vehicle = await prisma.vehicle.findUnique({ where: { driver_id: driverId } });
+  if (!vehicle) return null;
+
+  const pool = await prisma.pool.findFirst({
+    where: { vehicle_id: vehicle.id, status: { notIn: ["COMPLETED", "CANCELLED"] } },
+    include: {
+      vehicle: true,
+      members: {
+        include: {
+          ride_request: {
+            include: { passenger: { select: { id: true, name: true, email: true, role: true } } },
+          },
+        },
+      },
+    },
+  });
+
+  return pool;
+}

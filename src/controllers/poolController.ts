@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { markDriverArrived, startTrip, completeTrip, getPoolDetails } from "../services/poolLifecycleService.js";
+import { getActivePoolForDriver } from "../services/poolLifeCycleService.js";
 
 function handlePoolError(err: unknown, res: Response) {
   if (err instanceof Error) {
@@ -43,6 +44,15 @@ export async function complete(req: Request, res: Response) {
 export async function details(req: Request, res: Response) {
   try {
     const pool = await getPoolDetails(req.user!.userId, Number(req.params.id));
+    return res.status(200).json(pool);
+  } catch (err) {
+    return handlePoolError(err, res);
+  }
+}
+
+export async function myActivePool(req: Request, res: Response) {
+  try {
+    const pool = await getActivePoolForDriver(req.user!.userId);
     return res.status(200).json(pool);
   } catch (err) {
     return handlePoolError(err, res);
