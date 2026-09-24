@@ -1,6 +1,16 @@
 import prisma from "../db/prismaClient.js";
 import { calculateEstimatedFare } from "./fareService.js";
 
+
+import { assignRideToPool } from "./poolService.js";
+
+interface CreateRideInput {
+  passengerId: number;
+  pickup: string;
+  destination: string;
+  seats: number;
+}
+
 interface CreateRideInput {
   passengerId: number;
   pickup: string;
@@ -9,18 +19,24 @@ interface CreateRideInput {
 }
 
 export async function requestRide(input: CreateRideInput) {
-  const estimatedFare = calculateEstimatedFare(false);
-
-  return prisma.rideRequest.create({
+  const ride = await prisma.rideRequest.create({
     data: {
       passenger_id: input.passengerId,
       pickup: input.pickup,
       destination: input.destination,
       seats_requested: input.seats,
-      estimated_fare: estimatedFare,
+      estimated_fare: calculateEstimatedFare(false),
       status: "REQUESTED",
     },
   });
+
+  try {
+    const result = await assignRideToPool(ride.id);
+    return result.ride;
+  } catch (err) {
+    // No vehicle available right now — ride stays REQUESTED, can be matched later
+    return ride;
+  }
 }
 
 export async function getRideHistory(passengerId: number) {

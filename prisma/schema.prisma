@@ -45,6 +45,7 @@ model Vehicle {
   capacity    Int
   status      VehicleStatus @default(OFFLINE)
   created_at  DateTime      @default(now())
+  pools       Pool[]
 }
 
 enum RideStatus {
@@ -66,6 +67,33 @@ model RideRequest {
   status          RideStatus @default(REQUESTED)
   estimated_fare  Int
   created_at      DateTime   @default(now())
+  poolMember      PoolMember?
 }
 
 
+enum PoolStatus {
+  MATCHED
+  DRIVER_ARRIVED
+  STARTED
+  COMPLETED
+  CANCELLED
+}
+
+model Pool {
+  id          Int          @id @default(autoincrement())
+  vehicle_id  Int
+  vehicle     Vehicle      @relation(fields: [vehicle_id], references: [id])
+  status      PoolStatus   @default(MATCHED)
+  created_at  DateTime     @default(now())
+  members     PoolMember[]
+}
+
+model PoolMember {
+  id               Int         @id @default(autoincrement())
+  pool_id          Int
+  pool             Pool        @relation(fields: [pool_id], references: [id])
+  ride_request_id  Int         @unique
+  ride_request     RideRequest @relation(fields: [ride_request_id], references: [id])
+  fare             Int
+  created_at       DateTime    @default(now())
+}
