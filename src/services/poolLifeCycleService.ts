@@ -1,4 +1,4 @@
-import prisma from "../db/prismaClient.js";
+import prisma from "../db/prismaclient.js";
 import { assertValidTransition } from "./stateTransitionService.js";
 
 async function transitionPool(driverId: number, poolId: number, nextStatus: "DRIVER_ARRIVED" | "STARTED" | "COMPLETED") {
