@@ -8,6 +8,6 @@ RUN npm install
 COPY . .
 
 EXPOSE 4000
-RUN npx prisma generate
+RUN DATABASE_URL="postgresql://user:pass@localhost:5432/db" npx prisma generate
 
 CMD ["npm", "run", "dev"]
