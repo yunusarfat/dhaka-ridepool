@@ -269,8 +269,6 @@ passengerFare = baseFare + distanceCharge - poolDiscount
 - **Driver dashboard requires manual refresh** to see new ride requests — no polling or websocket implemented, given time constraints.
 
 ## Known Limitations & Next Improvements
-
-- Fare is not retroactively recalculated when new passengers join an existing pool (see Fare Model)
 - Driver dashboard does not auto-refresh; requires manual reload to see new requests
 - Real-time updates (websockets), real map/routing integration, and a real payment gateway were explicitly out of scope per the PRD and were not built
 
