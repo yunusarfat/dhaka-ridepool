@@ -298,6 +298,7 @@ My first version of the seat-locking code checked how many seats were taken *bef
 - **Backend (Render, Docker):** https://dhaka-ridepool.onrender.com
 - **Database (Neon, PostgreSQL):** free-tier, no expiry
 - **Frontend (Vercel):** https://dhaka-ridepool.vercel.app/login
+- **[dhaka-ridepool-front (frontend repo)](https://github.com/yunusarfat/dhaka-ridepool-frontend)**
 ## Demo Video
 https://drive.google.com/file/d/1aIQ--6DEWFsJmw9WE69mca_uqRd_as4Z/view?usp=sharing
 
