@@ -283,15 +283,23 @@ Feature branches used during development: `feature/passenger-auth`, `feature/dri
 
 ## AI Usage
 
-AI assistance (Claude) was used throughout this project for: scaffolding boilerplate (Express/TypeScript setup, Prisma schema drafts), debugging Docker/Prisma/Next.js configuration issues encountered during setup, and reviewing logic for the pooling and concurrency-handling services.
+I used Claude (AI assistant) throughout this project to help with:
+- Setting up boilerplate code (Express + TypeScript, Prisma schema)
+- Debugging Docker, Prisma, and Next.js configuration issues
+- Reviewing the pooling and concurrency logic
 
-- **One accepted suggestion:** using a database transaction with `SELECT ... FOR UPDATE` row locking to solve the last-seat concurrency race, rather than an application-level mutex or optimistic locking — this fit Postgres's native capabilities and was straightforward to test with a parallel-request script.
-- **One rejected/changed suggestion:** an early version of the pool-assignment logic acquired the row lock *after* reading the pool's occupied-seat count rather than before. This was caught by an automated test that revealed both concurrent requests being matched into the same pool, overbooking the vehicle. The fix (locking first, then re-reading fresh data) was implemented after understanding *why* the original ordering was unsafe — not just applying a suggested fix blindly.
+**One suggestion I accepted:**
+Claude suggested using a database transaction with row locking (`SELECT ... FOR UPDATE`) to stop two passengers from booking the same last seat at the same time. I used this because it's a simple, built-in Postgres feature and easy to test.
+
+**One suggestion I changed:**
+My first version of the seat-locking code checked how many seats were taken *before* locking the row. When I tested it with two requests sent at the same time, both got accepted — which overbooked the vehicle. I found this bug myself while testing, understood why the order was wrong, and fixed it by locking the row first and then checking seat count. I didn't just copy a fix — I made sure I understood the actual problem before changing the code.
 
 
 - **Backend (Render, Docker):** https://dhaka-ridepool.onrender.com
 - **Database (Neon, PostgreSQL):** free-tier, no expiry
 - **Frontend (Vercel):** https://dhaka-ridepool.vercel.app/login
 ## Demo Video
+https://drive.google.com/file/d/1aIQ--6DEWFsJmw9WE69mca_uqRd_as4Z/view?usp=sharing
 
-*(Add your 6-minute video link here once recorded)*
+
+
